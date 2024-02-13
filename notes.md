@@ -22,3 +22,18 @@ riscrivere il JSON per
 lavorare a livello di studio TCGA e non a livello di primary site
 
 riflettere sul comportamento delle metriche di ranking per geni assenti (righe nulle)
+
+
+
+
+sudo pacman -Syu jq
+è una nuova dipendenza introdotta dalla recente modifica del makefile
+
+
+il JSON delle queries mi sembra ancora da aggiornare...
+
+dove e perché è usato il file
+src\helper_scripts\matches.json
+?
+invece di un file hard coded sarebbe meglio generarlo dal JOSON delle queries no?
+
