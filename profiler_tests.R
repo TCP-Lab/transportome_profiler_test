@@ -6,6 +6,7 @@ source("./auxiliary_functions.R")
 
 # library(dplyr)
 # library(DESeq2)
+# library(BWStest)
 
 local_path <- "//wsl.localhost/Manjaro/home/FeAR/PROJECTS/transportome_profiler"
 
@@ -140,13 +141,17 @@ print(report_2)
 file.path(local_path, "src/pipes/gen_test_data.sh") |> readLines() |>
   getCaptured(" (\\d+)$") |> as.numeric() -> ngene
 cat("\n\"", ngene, "\" rows (genes) detected.\n\n", sep = "")
+
 file.path(local_path, "data/in/heatmaps_runtime_options.json") |> readLines() |>
   getCaptured("\"rank_method\": \"(\\w+)\",$") -> metric
 cat("\n\"", metric, "\" metric detected.\n\n", sep = "")
 
+# Dynamically call a function based on a string representing its name
+get_metric <- get(metric |> sub("norm_", "", x=_))
+
 # If the ranking metric calculation can be applied to the single row of the
 # raw-count expression matrix.
-if (metric %in% c("fold_change", "s2n_ratio", "cohen_d")) {
+if (metric %in% c("fold_change", "s2n_ratio", "cohen_d", "bws_test")) {
   
   report_3 <- data.frame(row.names = types)
   for (cancer in types) {
@@ -161,8 +166,7 @@ if (metric %in% c("fold_change", "s2n_ratio", "cohen_d")) {
                        paste0(cancer, "_control")))[gene_index,] |>
       {\(x)x[,-1] |> t() |> as.data.frame() |> `colnames<-`(x[,1])}() -> control
     
-    # Dynamically call a function based on a string representing its name
-    get_metric <- get(metric |> sub("norm_", "", x=_))
+    # Compute the expected statistic
     stat <- get_metric(case, control)
     
     read.csv(file.path(local_path, "data/deas",
@@ -220,8 +224,7 @@ if (metric %in% c("norm_fold_change", "deseq_shrinkage",
     
     if (metric != "deseq_shrinkage") {
       
-      # Dynamically call a function based on a string representing its name
-      get_metric <- get(metric |> sub("norm_", "", x=_))
+      # Compute the expected statistic
       stat <- apply(norm_counts[1:50,], 1,
                     \(x)get_metric(x[which(condition == "case")],
                                    x[which(condition == "control")]))
@@ -231,10 +234,11 @@ if (metric %in% c("norm_fold_change", "deseq_shrinkage",
       # DESeq2 standard analysis
       dds2 <- DESeq2::DESeq(dds)
       # res <- DESeq2::results(dds2,
-      #                        name = "condition_case_vs_control")  # Standard FCs
+      #                        name = "condition_case_vs_control")   # Standard FCs
       res <- DESeq2::lfcShrink(dds2,
                                coef = "condition_case_vs_control",
-                               type="apeglm")                       # Shrunken FCs
+                               type = "apeglm")                      # Shrunken FCs
+      stat <- res$log2FoldChange[1:50]
     }
     
     read.csv(file.path(local_path, "data/deas",
@@ -251,7 +255,7 @@ if (metric %in% c("norm_fold_change", "deseq_shrinkage",
                check = check(rownames(ranking),names(stat)),
                rank_stat = ranking, expected = stat,
                check = check(ranking[,1], stat, 1e-9),
-               ref_logFC = ref_logFC) |> print()
+               ref_logFC = ref_logFC, delta = (ranking - stat)) |> print()
   }
 }
 

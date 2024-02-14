@@ -82,7 +82,7 @@ returned:
 |TARGET         |734            |
 |K              |70             |
 
-### Gene check
+#### Gene check
 ```bash
 wc -l expression_matrix.tsv
 ```

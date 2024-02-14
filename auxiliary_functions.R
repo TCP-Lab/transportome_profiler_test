@@ -67,6 +67,16 @@ cohen_d <- function(case, ctrl) {
   return(d)
 }
 
+# The BWS test statistic
+bws_test <- function(case, ctrl) {
+  B <- BWStest::bws_stat(unlist(case), unlist(control))
+  return(B)
+}
+
+# Dummy function
+deseq_shrinkage <- function() {
+  return(0)
+}
 
 
 
