@@ -232,18 +232,24 @@ if (metric %in% c("norm_fold_change", "deseq_shrinkage",
     } else if (metric == "deseq_shrinkage") {
         
       # DESeq2 standard analysis
-      dds2 <- DESeq2::DESeq(dds)
+      dds2 <- DESeq2::DESeq(dds, minReplicatesForReplace = Inf)
       # res <- DESeq2::results(dds2,
       #                        name = "condition_case_vs_control")   # Standard FCs
       res <- DESeq2::lfcShrink(dds2,
                                coef = "condition_case_vs_control",
                                type = "apeglm")                      # Shrunken FCs
       stat <- res$log2FoldChange[1:50]
+      stat <- dplyr::filter(as.data.frame(res),
+                            padj < 1e-30)[1:50, "log2FoldChange", drop = FALSE]
     }
     
     read.csv(file.path(local_path, "data/deas",
                        paste0(cancer, "_deseq.csv")),
-             row.names = 1)[1:50,1, drop = FALSE] -> ranking
+             row.names = 1) -> ranking
+    
+    read.csv(file.path(local_path, "data/deas",
+                       paste0(cancer, "_deseq.csv")),
+             row.names = 1)[rownames(stat),1, drop = FALSE] -> ranking
     
     # Always compute the norm_fold_change metric as a reference
     ref_logFC <- apply(norm_counts[1:50,], 1,
@@ -251,13 +257,38 @@ if (metric %in% c("norm_fold_change", "deseq_shrinkage",
                                        x[which(condition == "control")]))
     
     print(cancer)
-    data.frame(gene = rownames(ranking), expected_gene = names(stat),
-               check = check(rownames(ranking),names(stat)),
+    data.frame(gene = rownames(ranking), expected_gene = rownames(stat),
+               check = check(rownames(ranking),rownames(stat)),
                rank_stat = ranking, expected = stat,
-               check = check(ranking[,1], stat, 1e-9),
+               check = check(ranking[,1], stat[,1], 1e-9),
                ref_logFC = ref_logFC, delta = (ranking - stat)) |> print()
   }
 }
+
+
+dds2 <- DESeq2::DESeq(dds, minReplicatesForReplace = Inf)
+dds2 <- DESeq2::DESeq(dds)
+res <- DESeq2::lfcShrink(dds2,
+                         coef = "condition_case_vs_control",
+                         type = "apeglm")
+stat <- as.data.frame(res)[,"log2FoldChange",drop=F]
+
+read.csv(file.path(local_path, "data/deas",
+                   paste0(cancer, "_deseq.csv")),
+         row.names = 1) -> ranking
+
+ord_rank <- ranking[order(ranking$ranking),,drop=F]
+ord_stat <- stat[order(stat$log2FoldChange),,drop=F]
+
+
+
+
+data.frame(PyDESEq_IDs = ord_rank[,1],
+           PyDESEq_logFC = rownames(ord_rank),
+           check = check(rownames(ord_rank),rownames(ord_stat)),
+           DESEq_IDs = rownames(ord_stat),
+           DESEq_logFC = ord_stat[,1])
+
 
 
 

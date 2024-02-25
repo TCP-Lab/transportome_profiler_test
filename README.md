@@ -101,11 +101,13 @@ Choose one of the ranking metrics implemented by `genranker` (use
 ```bash
 kerblam run heatmaps -l --profile test
 ```
-this will run
-1. `select_and_run.py`
+this will run the following modules:
+1. `/ranking/select_and_run.py`
 	- metasplit
 	- generanker
 		- fast-cohen
+1. `make_genesets.py`
+	- bonsai
 
 
 

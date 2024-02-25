@@ -24,17 +24,95 @@ lavorare a livello di studio TCGA e non a livello di primary site
 riflettere sul comportamento delle metriche di ranking per geni assenti (righe nulle)
 
 
-
-
-sudo pacman -Syu jq
-è una nuova dipendenza introdotta dalla recente modifica del makefile
-
-
-il JSON delle queries mi sembra ancora da aggiornare...
-
 dove e perché è usato il file
 src\helper_scripts\matches.json
 ?
 invece di un file hard coded sarebbe meglio generarlo dal JOSON delle queries no?
 
+è raccomandato filtrare prima di far correre DESeq2??
 
+
+Colorectal_cancer -> Colon cancer
+
+
+
+nel database 
+amino phospolipid
+credo sia un refuso
+
+
+
+Add this:
+```python
+import sys
+
+def exit_program(string):
+    print(string)
+    sys.exit(0)
+```
+and run from Bash as
+```bash
+python ./src/modules/make_genesets.py \
+	./data/MTPDB.sqlite \
+	./data/in/basic_gene_lists.json \
+	./data/genesets.json \
+	./data/genesets_repr.txt \
+	--prune_direction "bottomup" \
+	--prune_similarity 0.45 \
+	--verbose
+```
+
+# 1. Generate large tables
+uses `make_large_tables()` to make 9 large tables based on hardcoded `basic_gene_lists` found in
+`./data/in/basic_gene_lists.json`
+```
+whole_transportome
+|___pores
+|	|___channels
+|	|___aquaporins
+|___transporters
+	|___solute_carriers
+	|___atp_driven
+		|___ABC
+		|___pumps
+```
+```python
+	# Check the size of tables
+	for name, table in large_tables.items():
+	    print(name + ":  " + str(table.shape))
+	exit_program("\nExit_1\n")
+
+	# 2. Generate lists from large tables
+```
+# 2. Generate lists from large tables
+For each large table, use `bonsai` to generate tree structures of all the possible gene sets, based on the 3 parameters of the function `generate_gene_list_trees()`, with the following default values:
+```
+min_pop_score: float = 0.5,
+min_set_size: int = 10,
+min_recurse_set_size: int = 40,
+```
+
+```python
+	# Manually check these two tables
+	trees["solute_carriers"].to_representation(sys.stdout)
+	trees["pumps"].to_representation(sys.stdout)
+	exit_program("\nExit_2\n")
+
+	# 3. Make the union of the genesets following the structure
+```
+
+# 3. Make the union of the genesets following the structure
+Paste all the trees togheter
+```python
+# Visualize the assembled tree and check the total size
+large_tree.to_representation(sys.stdout)
+print("\n")
+for name, table in large_tables.items():
+    print(trees[name])
+
+print("--- TOTAL ---")
+print(large_tree)
+exit_program("\nExit_3.1\n")
+
+if not args.no_prune:
+```
