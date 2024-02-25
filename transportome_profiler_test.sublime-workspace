@@ -1,0 +1,861 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"othe",
+				"other_nodes"
+			],
+			[
+				"exi",
+				"exit_program"
+			],
+			[
+				"eleme",
+				"element"
+			],
+			[
+				"meta",
+				"metaData"
+			],
+			[
+				"u",
+				"user_names"
+			],
+			[
+				"n",
+				"new_state"
+			],
+			[
+				"html",
+				"htmlFiles"
+			],
+			[
+				"pro",
+				"functional-programming"
+			],
+			[
+				"pk",
+				"pkg_ver"
+			],
+			[
+				"r_",
+				"r_length"
+			],
+			[
+				"ou",
+				"out_dir"
+			],
+			[
+				"anq",
+				"anqFASTQ"
+			],
+			[
+				"e",
+				"end"
+			],
+			[
+				"en",
+				"entry_ver"
+			],
+			[
+				"all",
+				"all_name"
+			],
+			[
+				"entr",
+				"entry_path"
+			],
+			[
+				"entry_",
+				"entry_dir"
+			],
+			[
+				"seq_",
+				"seq_name"
+			],
+			[
+				"f",
+				"funx"
+			],
+			[
+				"g",
+				"grn"
+			],
+			[
+				"scri",
+				"script_name"
+			],
+			[
+				"anch_",
+				"anch_path"
+			],
+			[
+				"str",
+				"strcmp"
+			],
+			[
+				"set",
+				"set_ylabel"
+			],
+			[
+				"sub",
+				"sub4"
+			],
+			[
+				"data_",
+				"data_min"
+			],
+			[
+				"fig",
+				"figName"
+			],
+			[
+				"ave",
+				"ave_peakAmp"
+			],
+			[
+				"q",
+				"q3"
+			],
+			[
+				"off",
+				"offTrace"
+			],
+			[
+				"get",
+				"getTime"
+			],
+			[
+				"fpr",
+				"fprintf"
+			],
+			[
+				"out",
+				"out_matrix"
+			],
+			[
+				"homo",
+				"homo_freq_rel"
+			],
+			[
+				"hom",
+				"homo_freq"
+			],
+			[
+				"pea",
+				"homo_peakAmp"
+			],
+			[
+				"bas",
+				"ave_basal"
+			],
+			[
+				"xl",
+				"xlabel"
+			],
+			[
+				"fre",
+				"freq_2"
+			],
+			[
+				"ferq",
+				"freq_2"
+			],
+			[
+				"mean",
+				"mean_data"
+			],
+			[
+				"pre",
+				"prepagil"
+			],
+			[
+				"pack",
+				"packages"
+			],
+			[
+				"anch",
+				"anch_path"
+			],
+			[
+				"sottoscrizion",
+				"sottoscrizioni"
+			],
+			[
+				"in",
+				"inviata"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "README.md",
+			"settings":
+			{
+				"buffer_size": 4108,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "notes.md",
+			"settings":
+			{
+				"buffer_size": 2839,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/?wsl.localhost/Manjaro/home/FeAR/PROJECTS/transportome_profiler/src/pipes/heatmaps.makefile",
+			"settings":
+			{
+				"buffer_size": 3697,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/?wsl.localhost/Manjaro/home/FeAR/PROJECTS/transportome_profiler/src/pipes/heatmaps2.makefile",
+			"settings":
+			{
+				"buffer_size": 2247,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"select the",
+				"UI: Select Theme"
+			],
+			[
+				"view",
+				"View: Toggle Status Bar"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"docker",
+				"Set Syntax: Dockerfile (with bash)"
+			],
+			[
+				"package",
+				"Package Control: List Packages"
+			],
+			[
+				"Snippet: lo",
+				"Snippet: Lorem ipsum"
+			],
+			[
+				"",
+				"Package Control: List Packages"
+			],
+			[
+				"control",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 130.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/E/UniTo Drive/WORKS/0010 - Ongoing/Transportome in Cancer/transportome_profiler_test",
+		"/?wsl.localhost/Manjaro/home/FeAR/PROJECTS/transportome_profiler",
+		"/?wsl.localhost/Manjaro/home/FeAR/PROJECTS/transportome_profiler/src",
+		"/C/Users/aleph/Desktop/gene_ranker",
+		"/C/Users/aleph/Desktop/gene_ranker/gene_ranker"
+	],
+	"file_history":
+	[
+		"/?wsl.localhost/Manjaro/home/FeAR/PROJECTS/transportome_profiler/data/in/heatmaps_runtime_options.json",
+		"/C/Users/aleph/Desktop/gene_ranker/gene_ranker/ranking_methods.py",
+		"/C/Users/aleph/Desktop/gene_ranker/gene_ranker/dual_dataset.py",
+		"/C/Users/aleph/Desktop/gene_ranker/gene_ranker/ranker.py",
+		"/?wsl.localhost/Manjaro/home/FeAR/PROJECTS/transportome_profiler/src/modules/make_genesets.py",
+		"/?wsl.localhost/Manjaro/home/FeAR/PROJECTS/transportome_profiler/src/pipes/heatmaps.makefile",
+		"/?wsl.localhost/Manjaro/home/FeAR/PROJECTS/transportome_profiler/data/in/dea_queries.json",
+		"/?wsl.localhost/Manjaro/home/FeAR/PROJECTS/transportome_profiler/data/in/basic_gene_lists.json",
+		"/?wsl.localhost/Manjaro/home/FeAR/PROJECTS/transportome_profiler/src/modules/ranking/select_and_run.py",
+		"/E/UniTo Drive/WORKS/0010 - Ongoing/Transportome in Cancer/transportome_profiler_test/README.md",
+		"/E/UniTo Drive/WORKS/0010 - Ongoing/Transportome in Cancer/transportome_profiler_test/notes.md",
+		"/E/UniTo Drive/Coding/HotNotes.md",
+		"/I/.shortcut-targets-by-id/1jIpBN3hAdR6wLyXuEtlz5umXfLG7tZPV/Endothelion/protocollo.tnotes",
+		"/C/Users/aleph/Desktop/kerblam_temp.md",
+		"/E/UniTo Drive/Coding/Type_R/ReinstR.R",
+		"/I/.shortcut-targets-by-id/1jIpBN3hAdR6wLyXuEtlz5umXfLG7tZPV/Endothelion/Brainstorm.tnotes",
+		"/E/UniTo Drive/Coding/x.FASTQ/countfastq.sh",
+		"/E/UniTo Drive/Coding/x.FASTQ/anqfastq.sh",
+		"/E/UniTo Drive/Coding/x.FASTQ/README.md",
+		"/C/Users/aleph/Desktop/Lusca_PC.ijm",
+		"/E/UniTo Drive/WORKS/2023 - Review - The Transpotome/Bibliography/Review Transportome_references.bib",
+		"/C/Users/aleph/Zotero/translators/Ahval News.js",
+		"/E/UniTo Drive/UTILITY FILES/Git Workflow.tnotes",
+		"/C/Users/aleph/Desktop/ICT.bib/code/regen_lib.py",
+		"/C/Users/aleph/Desktop/ICT.bib/code/source_data/library.bib",
+		"/C/Users/aleph/Desktop/ICT.bib/README.md",
+		"/C/Users/aleph/Desktop/ICT.bib/code/regen_all",
+		"/C/Users/aleph/Desktop/ICT.bib/Library/Research Articles/by macroarea/Yeasts and Fungi/A CRISPR-Cas9-based exploration into the elusive mechanism for lactate export in Saccharomyces cerevisiae.md",
+		"/E/UniTo Drive/Coding/ICT.bib.devel/issues.tnotes",
+		"/E/UniTo Drive/WORKS/2023 - Review - The Transpotome/Manuscript/BrainStorm.tnotes",
+		"/C/Users/aleph/Desktop/ICT.bib/Library/Reviews/Non Cancer/by transportomic target/Ion Channels/Eye on ion channels in immune cells.md",
+		"/C/Users/aleph/Desktop/ICT.bib/CONTRIBUTING.md",
+		"/E/UniTo Drive/Coding/ICT.bib/README.md",
+		"/?wsl.localhost/Manjaro/home/FeAR/PROJECTS/transportome_profiler/src/pipes/heatmaps2.makefile",
+		"/?wsl.localhost/Manjaro/home/FeAR/PROJECTS/transportome_profiler/src/pipes/gen_test_data.sh",
+		"/?wsl.localhost/Manjaro/home/FeAR/PROJECTS/transportome_profiler/data/genesets.json",
+		"/?wsl.localhost/Manjaro/home/FeAR/PROJECTS/transportome_profiler/src/dockerfiles/heatmaps.dockerfile",
+		"/?wsl.localhost/Manjaro/home/FeAR/PROJECTS/transportome_profiler/src/metasample.py",
+		"/?wsl.localhost/Manjaro/home/FeAR/PROJECTS/transportome_profiler/kerblam.toml",
+		"/?wsl.localhost/Manjaro/home/FeAR/PROJECTS/transportome_profiler/src/helper_scripts/matches.json",
+		"/?wsl.localhost/Manjaro/home/FeAR/PROJECTS/transportome_profiler/src/pipes/process_tcga_metadata.makefile",
+		"/?wsl.localhost/Manjaro/home/FeAR/PROJECTS/transportome_profiler/src/helper_scripts/install_r_pkgs.R",
+		"/E/UniTo Drive/WORKS/0010 - Ongoing/Transportome in Cancer/Transportome_Profiler/code_review.md",
+		"/E/UniTo Drive/UTILITY FILES/Registri Docente ed Esami.notes",
+		"/E/UniTo Drive/UTILITY FILES/Moodle.tnotes",
+		"/E/UniTo Drive/Teaching/Fisiologia @ SUISM/Lezioni - Materiale/Federico/ToAdd.notes",
+		"/?wsl.localhost/Manjaro/home/FeAR/PROJECTS/transportome_profiler/env/bin/generanker",
+		"/C/Users/aleph/Desktop/gene_ranker/gene_ranker/bin.py",
+		"/C/Users/aleph/Desktop/fast-cohen/src/main.rs",
+		"/C/Users/aleph/Desktop/gene_ranker/README.md",
+		"/C/Users/aleph/Desktop/gene_ranker/gene_ranker/__init__.py",
+		"/C/Users/aleph/Desktop/gene_ranker/gene_ranker/__main__.py",
+		"/E/UniTo Drive/UTILITY FILES/Linux Temp/LinuxNotes.tnotes",
+		"/E/UniTo Drive/Teaching/Fisiologia @ SUISM/Esame - Materiale/testi mail studenti.tnotes",
+		"/E/UniTo Drive/WORKS/0010 - Ongoing/Transportome in Cancer/Transportome_Profiler/profiler_notes.md",
+		"/C/Users/aleph/Desktop/profiler_notes.md",
+		"/?wsl.localhost/Manjaro/home/FeAR/PROJECTS/transportome_profiler/env/bin/metasplit",
+		"/?wsl.localhost/Manjaro/home/FeAR/PROJECTS/transportome_profiler/data/expression_matrix_metadata.tsv",
+		"/?wsl.localhost/Manjaro/home/FeAR/PROJECTS/transportome_profiler/data/out/Testicular_cancer_case",
+		"/?wsl.localhost/Manjaro/home/FeAR/PROJECTS/transportome_profiler/data/out/Thyroid_cancer_case",
+		"/?wsl.localhost/Manjaro/home/FeAR/PROJECTS/transportome_profiler/data/out/Thyroid_cancer_control",
+		"/?wsl.localhost/Manjaro/home/FeAR/PROJECTS/transportome_profiler/data/out/Adrenal_cancer_case",
+		"/E/UniTo Drive/Coding/transportome_profiler/src/pipes/heatmaps.makefile",
+		"/E/UniTo Drive/Coding/transportome_profiler/src/dockerfiles/heatmaps.dockerfile",
+		"/E/UniTo Drive/Coding/transportome_profiler/src/pipes/gen_test_data.sh",
+		"/E/UniTo Drive/Coding/transportome_profiler/src/pipes/process_tcga_metadata.makefile",
+		"/?wsl.localhost/Manjaro/home/FeAR/PROJECTS/transportome_profiler/src/README.md",
+		"/E/UniTo Drive/UTILITY FILES/WSL.notes",
+		"/?wsl.localhost/Manjaro/home/FeAR/PROJECTS/transportome_profiler/data/in/temp.tsv",
+		"/?wsl.localhost/Manjaro/home/FeAR/PROJECTS/transportome_profiler/data/in/expression_matrix_metadata.tsv",
+		"/E/UniTo Drive/Coding/transportome_profiler/src/helper_scripts/matches.json",
+		"/E/UniTo Drive/UTILITY FILES/R_Bioconductor.tnotes",
+		"/E/Personal Drive/Casa Auto Banca e Tasse/ISEE/2022 per 2024/Giulia/Estratto_Conto_Carte__2022",
+		"/E/UniTo Drive/Coding/Kerblam_prototype/README.md",
+		"/E/Dropbox/MyDockers/Test/4/Dockerfile",
+		"/E/UniTo Drive/Coding/Kerblam_prototype/src/dockerfiles/red_pipe.dockerfile",
+		"/?wsl.localhost/Manjaro/home/FeAR/projects/test-project/kerblam.toml",
+		"/E/UniTo Drive/Coding/Kerblam_prototype/kerblam.toml",
+		"/?wsl.localhost/Manjaro/home/FeAR/projects/test-project/src/dockerfiles/red_pipe.dockerfile",
+		"/E/UniTo Drive/Coding/Kerblam_prototype/src/pipes/red_pipe.sh",
+		"/E/UniTo Drive/Coding/Kerblam_prototype/src/pipes/blue_pipe.sh",
+		"/?wsl.localhost/Manjaro/home/FeAR/projects/test-project/src/pipes/blue_pipe.sh",
+		"/?wsl.localhost/Manjaro/home/FeAR/projects/test-project/src/pipes/red_pipe.sh",
+		"/E/Dropbox/MyDockers/Mandelbrot/Dockerfile",
+		"/E/Dropbox/MyDockers/Test/3/Dockerfile",
+		"/?wsl.localhost/Manjaro/home/FeAR/projects/test-project/src/pipes/myPipe_1.sh",
+		"/E/UniTo Drive/Coding/x.FASTQ/getfastq.sh",
+		"/?wsl.localhost/Manjaro/home/FeAR/projects/test-project_7/kerblam.toml",
+		"/?wsl.localhost/Manjaro/home/FeAR/projects/test-project_7/pre-commit-config.yaml",
+		"/E/UniTo Drive/UTILITY FILES/Tesi Correnti - Lista Studenti.tnotes",
+		"/E/UniTo Drive/Web/logSpace/content/docs/biophysics/OWRK.md",
+		"/E/UniTo Drive/UTILITY FILES/Webex Addresses.notes",
+		"/E/UniTo Drive/Web/logSpace/content/docs/biophysics/markov_1.md",
+		"/E/UniTo Drive/Web/logSpace/content/docs/biophysics/markov_3.md",
+		"/E/UniTo Drive/Web/logSpace/content/docs/biophysics/markov_2.md",
+		"/E/UniTo Drive/Coding/MORPHEUS/src/Morpheus_.ijm",
+		"/C/Users/aleph/Fiji.app/plugins/Lusca_PC.ijm",
+		"/C/Users/aleph/Fiji.app/WELCOME.md",
+		"/C/Users/aleph/Desktop/classifier_neuron.model",
+		"/E/UniTo Drive/Web/logSpace/content/docs/coding/metadata.md",
+		"/E/UniTo Drive/Web/logSpace/content/docs/coding/shallow.md",
+		"/E/UniTo Drive/Web/logSpace/content/docs/coding/_index.md",
+		"/E/UniTo Drive/Web/logSpace/content/docs/coding/functional_1.md",
+		"/E/UniTo Drive/Web/logSpace/content/docs/setups/_index.md",
+		"/E/UniTo Drive/Web/logSpace/content/docs/setups/R_setup.md",
+		"/E/UniTo Drive/Web/logSpace/content/docs/setups/hugo.md",
+		"/E/UniTo Drive/Web/logSpace/content/docs/biophysics/_index.md",
+		"/C/Users/aleph/Desktop/static_shared/js/fields.20b42.js",
+		"/C/Users/aleph/Desktop/static_shared/js/instructor_insights.20b42.js",
+		"/E/UniTo Drive/UTILITY FILES/RiLo e Missioni.tnotes",
+		"/E/UniTo Drive/UTILITY FILES/Biblio_Acquisti.tnotes",
+		"/E/UniTo Drive/Web/logSpace/static/js/MDM_date_operator.js",
+		"/E/UniTo Drive/Web/logSpace/layouts/shortcodes/DateOperator.html",
+		"/E/UniTo Drive/Web/logSpace/layouts/shortcodes/getValues.html",
+		"/E/UniTo Drive/Web/logSpace/static/js/MDM_getValues.js",
+		"/C/Users/aleph/Desktop/metaValues.json",
+		"/E/UniTo Drive/Coding/Type_H/proto_MDM.html",
+		"/E/UniTo Drive/Web/logSpace/layouts/shortcodes/MDM_CSS.html",
+		"/E/UniTo Drive/Web/logSpace/layouts/shortcodes/Notes.html",
+		"/C/Users/aleph/Desktop/metaValues (38).json",
+		"/C/Users/aleph/Desktop/metaValues (25).json",
+		"/C/Users/aleph/Desktop/metaValues (39).json",
+		"/C/Users/aleph/Desktop/metaValues (21).json",
+		"/C/Users/aleph/Desktop/metaValues (20).json",
+		"/C/Users/aleph/Desktop/metaValues (19).json",
+		"/C/Users/aleph/Desktop/metaValues (17).json",
+		"/C/Users/aleph/Desktop/metaValues (18).json",
+		"/C/Users/aleph/Desktop/metaValues (12).json"
+	],
+	"find":
+	{
+		"height": 32.0
+	},
+	"find_in_files":
+	{
+		"height": 115.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"endothelion",
+			"stringr",
+			"tools",
+			"Non Cancer",
+			"read",
+			"make_entries_from_csv",
+			"get_file_title_from_entry",
+			"16362504",
+			"requir",
+			"macro",
+			"target",
+			"macro",
+			"BibTexParser",
+			"load_bib",
+			"reverse_sort",
+			"prune_direction",
+			"is_similar",
+			"set",
+			"intersection",
+			"generate_gene_list_trees",
+			"items",
+			"sets",
+			"genesets",
+			"make_large_tables",
+			"generate_gene_list_trees",
+			"make_large_tables",
+			"prune",
+			"create_node",
+			"generate_gene_list_trees",
+			"make_large_tables",
+			"prune_similarity",
+			"create_node",
+			"generate_gene_list_trees",
+			"deseq",
+			"_bws_statistic",
+			"fast",
+			"ALL",
+			"signal_to_noise_ratio",
+			"two_way_in",
+			"RANKING_METHODS",
+			"signal_to_noise_ratio",
+			"filter_dataset",
+			"exec",
+			"filter_dataset",
+			"run_method",
+			"norm_cohen_d_ranking",
+			"primary",
+			"deseq2_norm",
+			"norm_with_deseq",
+			"norm_wrapper",
+			"norm_fold_change",
+			"DeseqStats",
+			"deseq2",
+			"DeseqDataSet",
+			"deseq2_norm",
+			"2",
+			"metavars",
+			"sample_size",
+			"set_meta",
+			"always_include",
+			"sample",
+			"method",
+			"partial",
+			"_primary_site",
+			"metaspli",
+			"ranker",
+			"partial",
+			"__main__",
+			"__name__",
+			"upstream",
+			"commit",
+			"sample_size",
+			"see",
+			"sample",
+			"metadata",
+			"toy",
+			"kerblam",
+			"arrow",
+			"about",
+			"estim",
+			"equation",
+			"{S}",
+			"{L}",
+			"{D}",
+			"{P}",
+			"LG",
+			"SL",
+			"SG",
+			"array_number_images_probmap",
+			"classe",
+			"n",
+			"n_",
+			"n",
+			"\\bm{Q}",
+			"\\bm{P}",
+			"R",
+			"t",
+			"like",
+			"markovi*\t\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\",
+			"markovi",
+			"defi",
+			"Overall",
+			"--",
+			"match",
+			"custom",
+			"console",
+			"placeholder",
+			"custom_user",
+			"metalabel",
+			"metaValue",
+			"metalabel",
+			"generateFieldOptions",
+			"userFields",
+			"metaValue",
+			"valuesAndMetadata",
+			"id",
+			"dropdown_operator1",
+			"cma",
+			"packa",
+			"current",
+			"make2StateChain2TM",
+			"make2StateChain",
+			"vector",
+			"div",
+			"voc_states",
+			"randomChoice",
+			"n",
+			"submodul"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"{\\scriptscriptstyle{S}}",
+			"{\\scriptscriptstyle{L}}",
+			"{\\scriptscriptstyle{D}}",
+			"{\\scriptscriptstyle{P}}",
+			"\\scriptscriptstyle{LG}",
+			"\\scriptscriptstyle{SL}",
+			"\\scriptscriptstyle{SG}",
+			"k",
+			"\\bm{P}",
+			"game",
+			"metaLabel",
+			"metaValues",
+			"makeChain2S2T",
+			"makeChain2S",
+			"data",
+			"kvoc_states",
+			"sample",
+			"N",
+			"'",
+			"",
+			"'",
+			"---",
+			"install.paths",
+			"install_paths",
+			"cc_assembler",
+			"remove_bam",
+			"starpath",
+			"_tstamp",
+			"script",
+			"end",
+			"start"
+		],
+		"reverse": false,
+		"scrollbar_highlights": true,
+		"show_context": true,
+		"use_buffer2": true,
+		"use_gitignore": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "README.md",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4108,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								567,
+								567
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Markdown/Markdown.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"stack_multiselect": false,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "notes.md",
+					"selected": true,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2839,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Markdown/Markdown.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"stack_multiselect": false,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"sheets":
+			[
+				{
+					"buffer": 2,
+					"file": "/?wsl.localhost/Manjaro/home/FeAR/PROJECTS/transportome_profiler/src/pipes/heatmaps.makefile",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3697,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Makefile/Makefile.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"stack_multiselect": false,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/?wsl.localhost/Manjaro/home/FeAR/PROJECTS/transportome_profiler/src/pipes/heatmaps2.makefile",
+					"selected": true,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2247,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Makefile/Makefile.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"stack_multiselect": false,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 32.0
+	},
+	"input":
+	{
+		"height": 46.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			0.520345457323,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 188.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.jotter":
+	{
+		"height": 126.0
+	},
+	"pinned_build_system": "",
+	"project": "transportome_profiler_test.sublime-project",
+	"replace":
+	{
+		"height": 60.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 1,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 394.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
