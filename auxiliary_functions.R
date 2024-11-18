@@ -69,7 +69,7 @@ cohen_d <- function(case, ctrl) {
 
 # The BWS test statistic
 bws_test <- function(case, ctrl) {
-  B <- BWStest::bws_stat(unlist(case), unlist(control))
+  B <- BWStest::bws_stat(unlist(case), unlist(ctrl))
   return(B)
 }
 
