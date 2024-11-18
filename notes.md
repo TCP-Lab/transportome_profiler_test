@@ -1,8 +1,35 @@
 
 
+Categorie dubbie:
+Cervix_cancer:		Cervix,Cervix Uteri,Vagina
+Uterine_cancer:		Uterus,Endometrium
+Lymphoma:			Blood,White blood cell,Bone Marrow
+
+sample_type... verificare (tenere i metastatici ??)
+
+
 https://hbctraining.github.io/DGE_workshop/lessons/02_DGE_count_normalization.html#:~:text=To%20perform%20the%20median%20of,which%20we%20will%20see%20later.
 
 
+** fold_change
+** norm_fold_change
+
+deseq_shrinkage
+
+** cohen_d
+** norm_cohen_d
+
+** s2n_ratio
+** norm_s2n_ratio
+
+-- bws_test
+-- norm_bws_test
+
+
+
+--------
+make_genesets.py -> make_genesets_mod.py
+-----------
 
 Misspellings:
 metasample.py @ line 170

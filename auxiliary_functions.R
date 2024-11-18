@@ -67,11 +67,97 @@ cohen_d <- function(case, ctrl) {
   return(d)
 }
 
-# The BWS test statistic
-bws_test <- function(case, ctrl) {
-  B <- BWStest::bws_stat(unlist(case), unlist(ctrl))
+# BWS test statistic for two independent samples
+bws_test_R <- function(case, ctrl, alternative = "two-sided") {
+    
+    ctrl |> unlist() |> length() -> n
+    case |> unlist() |> length() -> m
+
+    # Sort the inputs
+    combined_rank <- rank(c(unlist(ctrl), unlist(case)), ties.method = "max")
+     
+    combined_rank[1:n] |> sort() -> Ri
+    combined_rank[n+1:m] |> sort() -> Hj
+    
+    i <- seq(1, n)
+    j <- seq(1, m)
+    
+    Bx_num <- Ri - ((m + n) / n) * i
+    By_num <- Hj - ((m + n) / m) * j
+    
+    if (alternative == "two-sided") {
+      Bx_num <- Bx_num^2
+      By_num <- By_num^2
+    } else {
+      Bx_num <- Bx_num * abs(Bx_num)
+      By_num <- By_num * abs(By_num)
+    }
+    
+    Bx_den <- (i / (n + 1)) * (1 - i / (n + 1)) * m * ((m + n) / n)
+    By_den <- (j / (m + 1)) * (1 - j / (m + 1)) * n * ((m + n) / m)
+    
+    Bx <- (1/n) * sum(Bx_num / Bx_den, na.rm = TRUE)
+    By <- (1/m) * sum(By_num / By_den, na.rm = TRUE)
+    
+    if (alternative == "two-sided") {
+      B <- (Bx + By) / 2
+    } else {
+      B <- (Bx - By) / 2
+    }
+
   return(B)
 }
+
+# bws_test_scipy 
+# BWS test statistic for two independent samples
+bws_test <- function(case, ctrl, alternative = "two-sided") {
+    
+    ctrl |> unlist() |> length() -> n
+    case |> unlist() |> length() -> m
+    
+    # Sort the inputs
+    combined_rank <- rank(c(unlist(ctrl), unlist(case)), ties.method = "average")
+    
+    combined_rank[1:n] |> sort() -> Ri
+    combined_rank[n+1:m] |> sort() -> Hj
+    
+    i <- seq(1, n)
+    j <- seq(1, m)
+    
+    Bx_num <- Ri - ((m + n) / n) * i
+    By_num <- Hj - ((m + n) / m) * j
+    
+    if (alternative == "two-sided") {
+        Bx_num <- Bx_num^2
+        By_num <- By_num^2
+    } else {
+        Bx_num <- Bx_num * abs(Bx_num)
+        By_num <- By_num * abs(By_num)
+    }
+    
+    Bx_den <- (i / (n + 1)) * (1 - i / (n + 1)) * m * ((m + n) / n)
+    By_den <- (j / (m + 1)) * (1 - j / (m + 1)) * n * ((m + n) / m)
+    
+    Bx <- (1/n) * sum(Bx_num / Bx_den, na.rm = TRUE)
+    By <- (1/m) * sum(By_num / By_den, na.rm = TRUE)
+    
+    if (alternative == "two-sided") {
+        B <- (Bx + By) / 2
+    } else {
+        B <- (Bx - By) / 2
+    }
+    
+    return(B)
+}
+
+# BWS test statistic for two independent samples
+bws_test_3 <- function(case, ctrl) {
+    
+    B <- BWStest::bws_stat(unlist(case), unlist(ctrl))
+    
+    return(B)
+}
+
 
 # Dummy function
 deseq_shrinkage <- function() {
