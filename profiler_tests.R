@@ -6,6 +6,8 @@ source("./auxiliary_functions.R")
 
 library(dplyr)
 # library(DESeq2)
+# library(fgsea)
+# library(rjson)
 
 local_path <- "//wsl.localhost/Manjaro/home/FeAR/PROJECTS/transportome_profiler"
  
@@ -280,6 +282,28 @@ if (metric %in% c("norm_fold_change", "deseq_shrinkage",
 
 
 
+# --- run_gsea -----------------------------------------------------------------
+
+
+
+file.path(local_path, "data/genesets.json") |>
+  rjson::fromJSON(file=_) -> gene_sets
+
+
+
+result <- fgsea::fgsea(
+  pathways = genesets,
+  stats = ranks,
+  gseaParam = 1
+)
+
+
+
+
+data <- rjson::fromJSON(readr::read_file(file))
+
+# We need a list of id: data
+data <- lapply(data, \(x) {x[["data"]]})
 
 
 

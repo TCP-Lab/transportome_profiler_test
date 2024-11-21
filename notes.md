@@ -1,7 +1,37 @@
 
-Colorectal_cancer -> Colon cancer ??
+???
+Blood_cancer
+Bone_marrow_cancer
+???
+
+trasformare 'Colorectal_cancer' in 'Colon cancer' o aggiungere 'Rectum' di TCGA ai case  ???
 
 sample_type... verificare (tenere i metastatici ??)
+
+
+
+non ci sono campioni Vagina in TCGA (manca il case)... eliminare il type 'Vaginal_cancer'
+
+
+
+
+
+TCGA
+9                                            Soft tissue,Bone
+22                                           Lymphatic tissue
+29                                           White blood cell
+
+
+GTEX
+1                                                 Bone Marrow
+8                                                       Blood
+22                                                     Spleen
+
+
+
+
+
+
 
 
 https://hbctraining.github.io/DGE_workshop/lessons/02_DGE_count_normalization.html#:~:text=To%20perform%20the%20median%20of,which%20we%20will%20see%20later.
@@ -23,9 +53,9 @@ deseq_shrinkage
 
 
 
---------
+----------------------
 make_genesets.py -> make_genesets_mod.py
------------
+----------------------
 
 Misspellings:
 metasample.py @ line 170
