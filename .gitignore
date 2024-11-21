@@ -1,6 +1,10 @@
 # Bibliographic references
 refs/
 
+# Sublime project files
+*.sublime-project
+*.sublime-workspace
+
 # History files
 .Rhistory
 .Rapp.history
