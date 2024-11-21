@@ -6,7 +6,6 @@ source("./auxiliary_functions.R")
 
 library(dplyr)
 # library(DESeq2)
-# library(BWStest)
 
 local_path <- "//wsl.localhost/Manjaro/home/FeAR/PROJECTS/transportome_profiler"
  
@@ -176,15 +175,12 @@ if (metric %in% c("fold_change", "s2n_ratio", "cohen_d", "bws_test")) {
                        paste0(cancer, "_deseq.csv")),
              row.names = 1)[names(case),] -> ranking
     
-    report_3[cancer, 1:8] <- c(names(case), names(control),
+    report_3[cancer, 1:6] <- c(names(case), names(control),
                                check(names(case), names(control)),
-                               ranking, stat, check(ranking, stat, 1e-9),
-                               bws_test_R(case, control),
-                               BWStest::bws_stat(unlist(case), unlist(control)))
+                               ranking, stat, check(ranking, stat, 1e-9))
   }
   colnames(report_3) <- c("case_gene", "control_gene", "check",
-                          "rank_stat", "expected", "check",
-                          "bws_R", "BWStest_CRAN")
+                          "rank_stat", "expected", "check")
   print(report_3)
 }
 

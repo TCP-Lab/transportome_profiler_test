@@ -1,9 +1,5 @@
 
-
-Categorie dubbie:
-Cervix_cancer:		Cervix,Cervix Uteri,Vagina
-Uterine_cancer:		Uterus,Endometrium
-Lymphoma:			Blood,White blood cell,Bone Marrow
+Colorectal_cancer -> Colon cancer ??
 
 sample_type... verificare (tenere i metastatici ??)
 
@@ -42,8 +38,7 @@ select_and_run.py @ line 70
 
 Update help:
 ranking_methods.py (or generanker)
-`norm_bws_test` description
-`s2n_ratio` description (desc = "Use the signal to noise ratio (diff of means divided by variance)")
+`s2n_ratio` description (desc = "Use the signal to noise ratio (diff of means divided by variance)") or standard deviation?
 
 riscrivere il JSON per
 lavorare a livello di studio TCGA e non a livello di primary site
@@ -51,17 +46,10 @@ lavorare a livello di studio TCGA e non a livello di primary site
 riflettere sul comportamento delle metriche di ranking per geni assenti (righe nulle)
 
 
-dove e perché è usato il file
-src\helper_scripts\matches.json
-?
-invece di un file hard coded sarebbe meglio generarlo dal JOSON delle queries no?
-
-è raccomandato filtrare prima di far correre DESeq2??
-
-
-Colorectal_cancer -> Colon cancer
-
-
+il file
+	`src\helper_scripts\matches.json` 
+credo possa essere mangiato dallo script `gen_queries.py` per generare
+automaticamente il JSON delle query, ma è roba vecchia... aggiornarlo o eliminarlo.
 
 nel database 
 amino phospolipid

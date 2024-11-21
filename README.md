@@ -59,16 +59,16 @@ kerblam --version
 kerblam data fetch
 ```
 will download in `/data/in` the following objects:
-1. `expression_matrix.tsv.gz` archive, containing all the raw counts of
-	transcript abundance;
-1. `expression_matrix_metadata.tsv.gz` archive, containing the related metadata
-	for each sample (i.e., patient or, better, specimen);
-1. `MTPDB.sqlite.gz` archive, containing our
+1. `expression_matrix.tsv.gz`, an archive containing all the log2 raw counts for
+	transcript abundance quantification, as provided by TCGA and GTEx projects;
+1. `expression_matrix_metadata.tsv.gz`, an archive containing the related
+	metadata for each sample (i.e., patient or, better, specimen);
+1. `MTPDB.sqlite.gz`, an archive containing our
 	[Membrane Transport Protein Database](https://github.com/TCP-Lab/MTP-DB)
 	used for gene set definition;
 1. `ensg_data.csv`, giving for each ENSG ID the corresponding HGNC gene symbol; 
-1. `geo` folder, containing the tables of raw counts and metadata for the
-	individual studies retrieved from GEO.
+1. `geo`, a folder containing the tables of raw counts and metadata for
+	individual small studies retrieved from GEO for validation purposes.
 
 ### Raw counts
 The `expression_matrix.tsv.gz` archive is our Zenodo copy of the
@@ -108,8 +108,9 @@ This pipeline makes use of `metasample.py`
 ```bash
 kerblam run gen_test_data
 ```
-The accuracy of this step is verified by the `metasample` section of the
-`profiler_tests.R` script.
+> [!NOTE]  
+> The accuracy of this step is verified by the `metasample` section of the
+> `profiler_tests.R` script.
 
 ## Run the analysis pipeline on test data set
 Choose one of the ranking metrics implemented by _Gene Ranker_ (use

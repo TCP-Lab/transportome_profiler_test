@@ -67,57 +67,41 @@ cohen_d <- function(case, ctrl) {
   return(d)
 }
 
-# BWS test statistic for two independent samples
-bws_test_R <- function(case, ctrl, alternative = "two-sided") {
+# This function implements the computation of the BWS statistic for two
+# independent samples as defined in
+#
+#   W. Baumgartner, P. Weiß and H. Schindler 'A Nonparametric Test for the
+#   General Two-Sample Problem'. Biometrics, Vol. 54, No. 3 (Sep., 1998),
+#   pp. 1129-1135.
+#
+# along with its 'one-sided' modification introduced by Neuhauser in 2001:
+#
+#   Neuhauser M. 'One-sided two-sample and trend tests based on a modified
+#   Baumgartner-Weig-Schindler statistic'. J. Nonparam. Statist. 13,729-739.
+#
+# Notably, this function uses the option 'ties.method = "max"' for ranking to
+# be as consistent as possible with the definition of B given by the authors in
+# original the paper.
+#
+#   <<  ...the rank Gi (Hj) of each element Xi (Yj) is defined as the number of
+#       data in both sets smaller or equal to Xi (Yj). >>
+#
+# So, for 'alternative = "two-sided"' this function returns the exact same
+# values returned by the following function from the BWStest package:
+#
+#   BWStest::bws_stat(unlist(case), unlist(ctrl))
+#
+# On the contrary, SciPy's 'bws_test' function output can be reproduced by
+# changing the setting to 'ties.method = "average"'.
+#
+bws_test <- function(case, ctrl, alternative = "one-sided") {
     
     ctrl |> unlist() |> length() -> n
     case |> unlist() |> length() -> m
-
-    # Sort the inputs
+    
+    # Compute the ranks of the combined samples...
     combined_rank <- rank(c(unlist(ctrl), unlist(case)), ties.method = "max")
-     
-    combined_rank[1:n] |> sort() -> Ri
-    combined_rank[n+1:m] |> sort() -> Hj
-    
-    i <- seq(1, n)
-    j <- seq(1, m)
-    
-    Bx_num <- Ri - ((m + n) / n) * i
-    By_num <- Hj - ((m + n) / m) * j
-    
-    if (alternative == "two-sided") {
-      Bx_num <- Bx_num^2
-      By_num <- By_num^2
-    } else {
-      Bx_num <- Bx_num * abs(Bx_num)
-      By_num <- By_num * abs(By_num)
-    }
-    
-    Bx_den <- (i / (n + 1)) * (1 - i / (n + 1)) * m * ((m + n) / n)
-    By_den <- (j / (m + 1)) * (1 - j / (m + 1)) * n * ((m + n) / m)
-    
-    Bx <- (1/n) * sum(Bx_num / Bx_den, na.rm = TRUE)
-    By <- (1/m) * sum(By_num / By_den, na.rm = TRUE)
-    
-    if (alternative == "two-sided") {
-      B <- (Bx + By) / 2
-    } else {
-      B <- (Bx - By) / 2
-    }
-
-  return(B)
-}
-
-# bws_test_scipy 
-# BWS test statistic for two independent samples
-bws_test <- function(case, ctrl, alternative = "two-sided") {
-    
-    ctrl |> unlist() |> length() -> n
-    case |> unlist() |> length() -> m
-    
-    # Sort the inputs
-    combined_rank <- rank(c(unlist(ctrl), unlist(case)), ties.method = "average")
-    
+    # ...and reassign to case and control
     combined_rank[1:n] |> sort() -> Ri
     combined_rank[n+1:m] |> sort() -> Hj
     
@@ -130,7 +114,7 @@ bws_test <- function(case, ctrl, alternative = "two-sided") {
     if (alternative == "two-sided") {
         Bx_num <- Bx_num^2
         By_num <- By_num^2
-    } else {
+    } else if (alternative == "one-sided") {
         Bx_num <- Bx_num * abs(Bx_num)
         By_num <- By_num * abs(By_num)
     }
@@ -143,25 +127,11 @@ bws_test <- function(case, ctrl, alternative = "two-sided") {
     
     if (alternative == "two-sided") {
         B <- (Bx + By) / 2
-    } else {
-        B <- (Bx - By) / 2
+    } else if (alternative == "one-sided") {
+        B <- (By - Bx) / 2
     }
     
     return(B)
-}
-
-# BWS test statistic for two independent samples
-bws_test_3 <- function(case, ctrl) {
-    
-    B <- BWStest::bws_stat(unlist(case), unlist(ctrl))
-    
-    return(B)
-}
-
-
-# Dummy function
-deseq_shrinkage <- function() {
-  return(0)
 }
 
 
