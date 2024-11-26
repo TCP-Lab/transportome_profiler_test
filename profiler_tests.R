@@ -8,6 +8,9 @@ library(dplyr)
 # library(DESeq2)
 # library(fgsea)
 # library(rjson)
+library(DBI)
+library(RSQLite)
+
 
 local_path <- "//wsl.localhost/Manjaro/home/FeAR/PROJECTS/transportome_profiler"
  
@@ -47,8 +50,8 @@ read.csv(file.path(local_path,
 metaset <- merge(sampleset, metadata,
                  by.x = "sample", by.y = "sample")
 
-# If 75% reduction => Each group in the reduced dataset should
-#                     be (about) 0.25 times the original one 
+# Each group in the reduced dataset should be (about) 'ss_ratio' times the
+# original one. Skip check for groups smaller than 50.
 check(nrow(sampleset)/nrow(metadata), ss_ratio, 1e-3) # Global check
 var_levels <- unique(metadata[,metavars])
 report_1 <- data.frame(row.names = var_levels)
@@ -279,6 +282,308 @@ if (metric %in% c("norm_fold_change", "deseq_shrinkage",
     print(report_3)
   }
 }
+
+
+
+# --- MTP-DB -------------------------------------------------------------------
+
+mtpdb <- file.path(local_path, "data/MTPDB.sqlite")
+if (Sys.info()["sysname"] == "Windows") {
+    # Can't access the DB directly on WSL...
+    mtpdb <- file.path(Sys.getenv("USERPROFILE"), "Desktop", "MTPDB.sqlite")
+    file.copy(from = file.path(local_path, "data/MTPDB.sqlite"), to = mtpdb)
+}
+
+connection <- dbConnect(SQLite(), dbname = mtpdb)
+
+dbListTables(connection) |>
+    sapply(\(x) connection |> dbReadTable(x) |> duplicated() |> sum()) |>
+    as.data.frame() |> `colnames<-`("duplicated") |>
+    mutate(check = ifelse(duplicated == 0, "OK", "WARNING!!"))
+
+dbDisconnect(connection)
+
+
+
+# --- make_genesets  -----------------------------------------------------------
+
+# Beforehand:
+#   generate the maximum amount of gene sets (still larger than 10) by setting:
+#    - '--no_prune' option in `make_genesets.py` (in the 'heatmaps.makefile')
+#    - 'min_pop_score=0' in the 'generate_gene_list_trees' function
+#    - 'min_recurse_set_size=0' in the 'generate_gene_list_trees' function
+#
+#   run `kerblam run heatmaps -l --profile test`
+
+file.path(local_path, "data/genesets.json") |>
+    rjson::fromJSON(file=_) -> gene_sets
+
+gene_sets |> names() |> sapply(get_full_name, gene_sets) -> full_names
+
+connection <- dbConnect(SQLite(), dbname = mtpdb)
+
+# Get channel table
+connection |> dbReadTable("channels") |>
+    select(ensg, gating_mechanism, carried_solute) -> channel_table
+connection |> dbReadTable("structure") |>
+    select(ensg, pore_loops) |>
+    mutate(pore_forming = ifelse(pore_loops > 0, 1, 0)) |>
+    select(-pore_loops) -> pore_table
+merge(channel_table, pore_table, by = "ensg", all.x = TRUE) -> channel_table
+# Group and summarize
+channel_table |> get_genes_by(gating_mechanism) -> channels_by_G
+channel_table |> get_genes_by(carried_solute) -> channels_by_S
+channel_table |> get_genes_by(pore_forming) -> channels_by_P
+channel_table |> get_genes_by(gating_mechanism, carried_solute) -> channels_by_GS
+channel_table |> get_genes_by(gating_mechanism, pore_forming) -> channels_by_GP
+channel_table |> get_genes_by(carried_solute, pore_forming) -> channels_by_SP
+channel_table |> get_genes_by(gating_mechanism, carried_solute, pore_forming) -> channels_by_GSP
+
+base_cat <- "whole_transportome///pores///channels"
+
+# Check ancestor (level 0)
+setequal(get_gene_set(paste0("^", base_cat ,"$"), full_names, gene_sets),
+         channel_table$ensg)
+
+# Check level 1
+check_channels <- make_checker(base_cat)
+
+channels_by_G$gating_mechanism |>
+    sapply(\(x) check_channels("gating_mechanism", x, channels_by_G))
+
+channels_by_S$carried_solute |>
+    sapply(\(x) check_channels("carried_solute", x, channels_by_S))
+
+channels_by_P$pore_forming |> as.character() |>
+    sapply(\(x) check_channels("pore_forming", x, channels_by_P))
+
+# Check level 2
+combo <- get_random_pairs(channels_by_GS)
+setequal(
+    paste0("^", base_cat,
+           "///gating_mechanism::", combo$gating_mechanism,
+           "///carried_solute::", esc_value(combo$carried_solute),
+           "$") |>
+        get_gene_set(full_names, gene_sets),
+    channels_by_GS |>
+        filter(gating_mechanism == combo$gating_mechanism &
+                   carried_solute == combo$carried_solute) |>
+    select(elements) |> unlist())
+
+combo <- get_random_pairs(channels_by_GP)
+setequal(
+    paste0("^", base_cat,
+           "///gating_mechanism::", combo$gating_mechanism,
+           "///pore_forming::", esc_value(combo$pore_forming),
+           "$") |>
+        get_gene_set(full_names, gene_sets),
+    channels_by_GP |>
+        filter(gating_mechanism == combo$gating_mechanism &
+                   pore_forming == combo$pore_forming) |>
+        select(elements) |> unlist())
+
+combo <- get_random_pairs(channels_by_SP)
+setequal(
+    paste0("^", base_cat,
+           "///carried_solute::", esc_value(combo$carried_solute),
+           "///pore_forming::", esc_value(combo$pore_forming),
+           "$") |>
+        get_gene_set(full_names, gene_sets),
+    channels_by_SP |>
+        filter(carried_solute == combo$carried_solute &
+                   pore_forming == combo$pore_forming) |>
+        select(elements) |> unlist())
+
+# Check level 3 #### This always fails.... #### This always fails.... #### This always fails....
+combo <- get_random_pairs(channels_by_GSP)
+setequal(
+    paste0("^", base_cat,
+           "///gating_mechanism::", combo$gating_mechanism,
+           "///carried_solute::", esc_value(combo$carried_solute),
+           "///pore_forming::", esc_value(combo$pore_forming),
+           "$") |>
+        get_gene_set(full_names, gene_sets),
+    channels_by_GSP |>
+        filter(gating_mechanism == combo$gating_mechanism &
+                   carried_solute == combo$carried_solute &
+                   pore_forming == combo$pore_forming) |>
+        select(elements) |> unlist())
+
+
+
+# Get AQP table --- OK
+connection |> dbReadTable("aquaporins") -> AQP_table
+base_cat <- "whole_transportome///pores///aquaporins"
+setequal(get_gene_set(paste0("^", base_cat ,"$"), full_names, gene_sets),
+         AQP_table$ensg)
+
+
+
+# Get SLC table
+connection |> dbReadTable("solute_carriers") |>
+    select(ensg, carried_solute, port_type, direction) -> SLC_table
+# Group and summarize
+SLC_table |> get_genes_by(carried_solute) -> SLCs_by_S
+SLC_table |> get_genes_by(port_type) -> SLCs_by_T
+SLC_table |> get_genes_by(direction) -> SLCs_by_D
+SLC_table |> get_genes_by(carried_solute, port_type) -> SLCs_by_ST
+SLC_table |> get_genes_by(carried_solute, direction) -> SLCs_by_SD
+SLC_table |> get_genes_by(port_type, direction) -> SLCs_by_TD
+SLC_table |> get_genes_by(carried_solute, port_type, direction) -> SLCs_by_STD
+
+base_cat <- "whole_transportome///transporters///solute_carriers"
+
+# Check ancestor (level 0)
+setequal(get_gene_set(paste0("^", base_cat ,"$"), full_names, gene_sets),
+         SLC_table$ensg)
+
+# Check level 1
+check_SLCs <- make_checker(base_cat)
+
+SLCs_by_S$carried_solute |>
+    sapply(\(x) check_SLCs("carried_solute", x, SLCs_by_S))
+
+SLCs_by_T$port_type |>
+    sapply(\(x) check_SLCs("port_type", x, SLCs_by_T))
+
+SLCs_by_D$direction |>
+    sapply(\(x) check_SLCs("direction", x, SLCs_by_D))
+
+# Check level 2
+combo <- get_random_pairs(SLCs_by_ST)
+setequal(
+    paste0("^", base_cat,
+           "///carried_solute::", esc_value(combo$carried_solute),
+           "///port_type::", combo$port_type,
+           "$") |>
+        get_gene_set(full_names, gene_sets),
+    SLCs_by_ST |>
+        filter(carried_solute == combo$carried_solute &
+                   port_type == combo$port_type) |>
+        select(elements) |> unlist())
+
+combo <- get_random_pairs(SLCs_by_SD)
+setequal(
+    paste0("^", base_cat,
+           "///carried_solute::", esc_value(combo$carried_solute),
+           "///direction::", combo$direction,
+           "$") |>
+        get_gene_set(full_names, gene_sets),
+    SLCs_by_SD |>
+        filter(carried_solute == combo$carried_solute &
+                   direction == combo$direction) |>
+        select(elements) |> unlist())
+
+combo <- get_random_pairs(SLCs_by_TD)
+setequal(
+    paste0("^", base_cat,
+           "///port_type::", combo$port_type,
+           "///direction::", combo$direction,
+           "$") |>
+        get_gene_set(full_names, gene_sets),
+    SLCs_by_TD |>
+        filter(port_type == combo$port_type &
+                   direction == combo$direction) |>
+        select(elements) |> unlist())
+
+# Check level 3 #### This always fails.... #### This always fails.... #### This always fails....
+combo <- get_random_pairs(SLCs_by_STD)
+setequal(
+    paste0("^", base_cat,
+           "///carried_solute::", esc_value(combo$carried_solute),
+           "///port_type::", combo$port_type,
+           "///direction::", combo$direction,
+           "$") |>
+        get_gene_set(full_names, gene_sets),
+    SLCs_by_STD |>
+        filter(carried_solute == combo$carried_solute &
+                   port_type == combo$port_type &
+                   direction == combo$direction) |>
+        select(elements) |> unlist())
+
+
+
+# Get pumps table --- OK
+connection |> dbReadTable("pumps") |>
+    select(ensg, carried_solute, direction) -> pump_table
+# Group and summarize
+pump_table |> get_genes_by(carried_solute) -> pumps_by_S
+pump_table |> get_genes_by(direction) -> pumps_by_D
+pump_table |> get_genes_by(carried_solute, direction) -> pumps_by_SD
+
+base_cat <- "whole_transportome///transporters///atp_driven///pumps"
+
+# Check ancestor (level 0)
+setequal(get_gene_set(paste0("^", base_cat ,"$"), full_names, gene_sets),
+         pump_table$ensg)
+
+# Check level 1
+check_pumps <- make_checker(base_cat)
+
+pumps_by_S$carried_solute |>
+    sapply(\(x) check_pumps("carried_solute", x, pumps_by_S))
+
+pumps_by_D$direction |>
+    sapply(\(x) check_pumps("direction", x, pumps_by_D))
+
+# Check level 2
+combo <- get_random_pairs(pumps_by_SD)
+setequal(
+    paste0("^", base_cat,
+           "///carried_solute::", esc_value(combo$carried_solute),
+           "///direction::", combo$direction,
+           "$") |>
+        get_gene_set(full_names, gene_sets),
+    pumps_by_SD |>
+        filter(carried_solute == combo$carried_solute &
+                   direction == combo$direction) |>
+        select(elements) |> unlist())
+
+
+
+# Get ABC table --- OK
+connection |> dbReadTable("ABC_transporters") |>
+    select(ensg, carried_solute, direction) -> ABC_table
+# Group and summarize
+ABC_table |> get_genes_by(carried_solute) -> ABCs_by_S
+ABC_table |> get_genes_by(direction) -> ABCs_by_D
+ABC_table |> get_genes_by(carried_solute, direction) -> ABCs_by_SD # Empty
+
+base_cat <- "whole_transportome///transporters///atp_driven///ABC"
+
+# Check ancestor (level 0)
+setequal(get_gene_set(paste0("^", base_cat ,"$"), full_names, gene_sets),
+         ABC_table$ensg)
+
+# Check level 1
+check_ABCs <- make_checker(base_cat)
+
+ABCs_by_S$carried_solute |>
+    sapply(\(x) check_ABCs("carried_solute", x, ABCs_by_S))
+
+ABCs_by_D$direction |>
+    sapply(\(x) check_ABCs("direction", x, ABCs_by_D))
+
+
+
+
+
+
+
+dbDisconnect(connection)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

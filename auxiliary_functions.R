@@ -27,6 +27,82 @@ getCaptured <- function(text_lines, pattern) {
   return(values)
 }
 
+# Make gene sets from MTP-DB tables.
+# - Omits NAs to keep only complete cases
+# - Remove duplicates
+# - Discard gene sets smaller than 'min_set_size' (10)
+get_genes_by <- function(db_table, ...) {
+    
+    min_set_size <- 10
+    #min_recurse_set_size <- 40
+    
+    db_table |> group_by(...) |>
+        summarize(elements_dups = list(ensg), .groups = "drop") |>
+        as.data.frame() |> na.omit() |>
+        mutate(elements = elements_dups |> sapply(unique), .keep = "unused") |>
+        filter(elements |> sapply(length) >= min_set_size)
+}
+
+# Get the full name of the gene set by magical recursion
+get_full_name <- function(gene_set_id, catalogue) {
+    
+    gene_set_name <- catalogue[[gene_set_id]]$name
+    parent_id <- catalogue[[gene_set_id]]$parent
+    
+    if (is.null(parent_id)) {
+        return("whole_transportome")
+    } else {
+        return(paste0(get_parent(parent_id, catalogue), "///", gene_set_name))
+    }
+}
+
+# Retrieve gene set from transportome_profiler 'genesets.json' file 
+get_gene_set <- function(set_name, full_names_vector, catalogue) {
+    full_names_vector[grep(set_name, full_names_vector)] |> names() -> set_id
+    catalogue[[set_id]]$data
+}
+
+
+# Escape cation charges and adjust 'pore_forming' value to match names in
+# 'genesets.json' file 
+esc_value <- function(value) {
+    value |>
+        gsub("+", "\\+", x=_, fixed = TRUE) |>
+        gsub("0", "0.0", x=_, fixed = TRUE) |>
+        gsub("1", "1.0", x=_, fixed = TRUE)
+}
+
+# Function factory: returns functions to compare actual gene sets with expected
+# ones
+make_checker <- function(base_category) {
+    function(feature, value, summary_table) {
+        
+        value <- as.character(value)
+        
+        paste0("^", base_category, "///", feature, "::", esc_value(value), "$") |>
+            get_gene_set(full_names, gene_sets) -> x
+        
+        summary_table[summary_table[,feature] == value, "elements"] |>
+            unlist() -> y
+        
+        return(setequal(x,y))
+    }
+}
+
+# Get a random feature-value pair tuple from a given table
+get_random_pairs <- function(summary_table) {
+    index <- sample(1:nrow(summary_table),1)
+    random_pairs <- summary_table[index, 1:ncol(summary_table)-1]
+    print(random_pairs)
+    return(random_pairs)
+}
+
+
+
+
+
+
+
 
 # All the following functions take in two numeric vectors or single-column
 # matrices or data frames.

@@ -9,7 +9,6 @@ trasformare 'Colorectal_cancer' in 'Colon cancer' o aggiungere 'Rectum' di TCGA 
 sample_type... verificare (tenere i metastatici ??)
 
 
-
 non ci sono campioni Vagina in TCGA (manca il case)... eliminare il type 'Vaginal_cancer'
 
 
@@ -26,10 +25,6 @@ GTEX
 1                                                 Bone Marrow
 8                                                       Blood
 22                                                     Spleen
-
-
-
-
 
 
 
@@ -51,7 +46,28 @@ deseq_shrinkage
 -- bws_test
 -- norm_bws_test
 
+---------------
+Rb+ nella heatmap finale non va bene... dai!
 
+da dove è stata presa l'informazione sul pore loops e pore forming (i.e., la tabella 'structure' dell' MTP-DB)?
+
+
+
+perché porre la limitazione di 40 geni per la ricorsione sulle colonne successivedella tabella?
+previene in generale la generazione di liste valide (geni > 10)...
+
+
+
+ "^whole_transportome///pores///channels///gating_mechanism::voltage///carried_solute::Rb\\+///pore_forming::1.0$"
+
+ENSG00000115474 compare a sproposito perché ha
+gating_mechanism == NULL
+
+"^whole_transportome///pores///channels///gating_mechanism::voltage///carried_solute::cation///pore_forming::0.0$"
+
+ha molti canali non corretti
+
+--------------
 
 ----------------------
 make_genesets.py -> make_genesets_mod.py
@@ -76,10 +92,6 @@ lavorare a livello di studio TCGA e non a livello di primary site
 riflettere sul comportamento delle metriche di ranking per geni assenti (righe nulle)
 
 
-il file
-	`src\helper_scripts\matches.json` 
-credo possa essere mangiato dallo script `gen_queries.py` per generare
-automaticamente il JSON delle query, ma è roba vecchia... aggiornarlo o eliminarlo.
 
 nel database 
 amino phospolipid
@@ -95,17 +107,8 @@ def exit_program(string):
     print(string)
     sys.exit(0)
 ```
-and run from Bash as
-```bash
-python ./src/modules/make_genesets.py \
-	./data/MTPDB.sqlite \
-	./data/in/basic_gene_lists.json \
-	./data/genesets.json \
-	./data/genesets_repr.txt \
-	--prune_direction "bottomup" \
-	--prune_similarity 0.45 \
-	--verbose
-```
+
+
 
 # 1. Generate large tables
 uses `make_large_tables()` to make 9 large tables based on hardcoded `basic_gene_lists` found in
