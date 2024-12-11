@@ -13,7 +13,7 @@ library(RSQLite)
 
 
 local_path <- "//wsl.localhost/Manjaro/home/FeAR/PROJECTS/transportome_profiler"
- 
+
 
 
 # --- metasample ---------------------------------------------------------------
@@ -561,12 +561,11 @@ dbDisconnect(connection)
 
 
 
-
 # --- run_gsea -----------------------------------------------------------------
 
 
 file.path(local_path, "data/genesets.json") |>
-  rjson::fromJSON(file=_) -> gene_sets
+    rjson::fromJSON(file=_) -> gene_sets
 
 
 result <- fgsea::fgsea(
@@ -574,14 +573,5 @@ result <- fgsea::fgsea(
   stats = ranks,
   gseaParam = 1
 )
-
-
-
-data <- rjson::fromJSON(readr::read_file(file))
-
-# We need a list of id: data
-data <- lapply(data, \(x) {x[["data"]]})
-
-
 
 

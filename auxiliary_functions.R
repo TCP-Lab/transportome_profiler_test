@@ -29,8 +29,6 @@ getCaptured <- function(text_lines, pattern) {
 
 
 
-
-
 # Get the full name of the gene set by magical recursion
 get_full_name <- function(gene_set_id) {
     
@@ -130,7 +128,9 @@ check_synonyms <- function(combo) {
     }
 }
 
-
+# Check gene sets 2 (3) levels deep.
+# Similar to 'check_L1', but this test is run only on one particular combination
+# of two (three) feature-value pairs, as given by the 'combo' parameter.
 check_L2 <- function(summary_table, combo) {
     
     features <- names(summary_table)[-ncol(summary_table)]
@@ -158,7 +158,7 @@ check_L3 <- function(summary_table, combo) {
     
     summary_table |>
         filter(get(features[1]) == combo[1,features[1]] &
-               get(features[2]) == combo[1,features[2]],
+               get(features[2]) == combo[1,features[2]] &
                get(features[3]) == combo[1,features[3]]) |>
         select(elements) |> unlist() -> y
     
