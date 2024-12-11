@@ -27,10 +27,27 @@ getCaptured <- function(text_lines, pattern) {
   return(values)
 }
 
-# Make gene sets from MTP-DB tables.
-# - Omits NAs to keep only complete cases
-# - Remove duplicates
-# - Discard gene sets smaller than 'min_set_size' (10)
+
+
+
+
+# Get the full name of the gene set by magical recursion
+get_full_name <- function(gene_set_id) {
+    
+    gene_set_name <- gene_sets[[gene_set_id]]$name
+    parent_id <- gene_sets[[gene_set_id]]$parent
+    
+    if (is.null(parent_id)) {
+        return("whole_transportome")
+    } else {
+        return(paste0(get_full_name(parent_id),"///",gene_set_name))
+    }
+}
+
+# Makes gene sets from MTP-DB tables:
+# - omits NAs to keep only complete cases;
+# - removes duplicates;
+# - discards gene sets smaller than 'min_set_size' (10);
 get_genes_by <- function(db_table, ...) {
     
     min_set_size <- 10
@@ -43,53 +60,47 @@ get_genes_by <- function(db_table, ...) {
         filter(elements |> sapply(length) >= min_set_size)
 }
 
-# Get the full name of the gene set by magical recursion
-get_full_name <- function(gene_set_id, catalogue) {
+# Retrieve a gene set by name from transportome_profiler 'genesets.json' file 
+get_gene_set <- function(set_name) {
     
-    gene_set_name <- catalogue[[gene_set_id]]$name
-    parent_id <- catalogue[[gene_set_id]]$parent
+    paste0("^", set_name, "$") |> grep(full_names) -> index
     
-    if (is.null(parent_id)) {
-        return("whole_transportome")
-    } else {
-        return(paste0(get_parent(parent_id, catalogue), "///", gene_set_name))
-    }
+    full_names[index] |> names() -> set_id
+    gene_sets[[set_id]]$data
 }
 
-# Retrieve gene set from transportome_profiler 'genesets.json' file 
-get_gene_set <- function(set_name, full_names_vector, catalogue) {
-    full_names_vector[grep(set_name, full_names_vector)] |> names() -> set_id
-    catalogue[[set_id]]$data
-}
-
-
-# Escape cation charges and adjust 'pore_forming' value to match names in
-# 'genesets.json' file 
+# Escape cation charges, purines' phosphate level, and adjust 'pore_forming'
+# value to match names in 'genesets.json' file 
 esc_value <- function(value) {
     value |>
+        gsub("*", "\\*", x=_, fixed = TRUE) |>
         gsub("+", "\\+", x=_, fixed = TRUE) |>
         gsub("0", "0.0", x=_, fixed = TRUE) |>
         gsub("1", "1.0", x=_, fixed = TRUE)
 }
 
-# Function factory: returns functions to compare actual gene sets with expected
-# ones
-make_checker <- function(base_category) {
-    function(feature, value, summary_table) {
+# Check gene sets 1 level deep.
+# Given a 'summary_table' containing the expected gene sets for every possible
+# 'value' of a feature (e.g., "carried_solute", "gating_mechanism"), this
+# function compares the actual gene sets returned by 'transportome_profiler' (x)
+# with the expected ones (y).
+check_L1 <- function(summary_table) {
+    
+    summary_table[,1] |> as.character() |> sapply(function(value) {
         
-        value <- as.character(value)
+        feature <- names(summary_table)[1]
         
-        paste0("^", base_category, "///", feature, "::", esc_value(value), "$") |>
-            get_gene_set(full_names, gene_sets) -> x
+        paste0(base_cat, "///", feature, "::", esc_value(value)) |>
+            get_gene_set() -> x
         
         summary_table[summary_table[,feature] == value, "elements"] |>
             unlist() -> y
         
         return(setequal(x,y))
-    }
+    }) |> as.data.frame() |> `colnames<-`("check")
 }
 
-# Get a random feature-value pair tuple from a given table
+# Get a random feature-value pair tuple from a given 'summary_table'
 get_random_pairs <- function(summary_table) {
     index <- sample(1:nrow(summary_table),1)
     random_pairs <- summary_table[index, 1:ncol(summary_table)-1]
@@ -97,10 +108,62 @@ get_random_pairs <- function(summary_table) {
     return(random_pairs)
 }
 
+# Check equivalence of the synonymous sets returned by 'transportome_profiler'
+check_synonyms <- function(combo) {
+    # Find synonymous sets by permutation of the 'feature::value' terms
+    gtools::permutations(n = length(combo),
+                         r = length(combo),
+                         v = paste0(names(combo), "::", combo)) |>
+        apply(1, paste, collapse = "///") -> syns
+    
+    cat("synonymous sets:\n")
+    print(syns)
+    # Compare synonyms by index 2-combinations
+    combs <- combn(1:length(syns), 2)
+    for (i in 1:ncol(combs)) {
+        setequal(
+            paste0(base_cat, "///", esc_value(syns[combs[1,i]])) |>
+                get_gene_set(),
+            paste0(base_cat, "///", esc_value(syns[combs[2,i]])) |>
+                get_gene_set()) -> result
+        cat(paste0("Pair [", combs[1,i], ",", combs[2,i], "]:   ", result, "\n"))
+    }
+}
 
 
-
-
+check_L2 <- function(summary_table, combo) {
+    
+    features <- names(summary_table)[-ncol(summary_table)]
+    
+    paste0(base_cat,
+           paste0("///", features, "::", esc_value(combo[features]),
+                  collapse = "")) |>
+        get_gene_set() -> x
+    
+    summary_table |>
+        filter(get(features[1]) == combo[1,features[1]] &
+               get(features[2]) == combo[1,features[2]]) |>
+        select(elements) |> unlist() -> y
+    
+    return(setequal(x,y))
+}
+check_L3 <- function(summary_table, combo) {
+    
+    features <- names(summary_table)[-ncol(summary_table)]
+    
+    paste0(base_cat,
+           paste0("///", features, "::", esc_value(combo[features]),
+                  collapse = "")) |>
+        get_gene_set() -> x
+    
+    summary_table |>
+        filter(get(features[1]) == combo[1,features[1]] &
+               get(features[2]) == combo[1,features[2]],
+               get(features[3]) == combo[1,features[3]]) |>
+        select(elements) |> unlist() -> y
+    
+    return(setequal(x,y))
+}
 
 
 

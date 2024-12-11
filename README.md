@@ -103,6 +103,9 @@ zcat expression_matrix.tsv.gz | wc -l
 ```
 returned: `60499`.
 
+
+
+# Run `heatmaps` workflow on test data set
 ## Generate the reduced data set for testing
 This pipeline makes use of `metasample.py`
 ```bash
@@ -112,23 +115,95 @@ kerblam run gen_test_data
 > The accuracy of this step is verified by the `metasample` section of the
 > `profiler_tests.R` script.
 
-## Run the analysis pipeline on test data set
-Choose one of the ranking metrics implemented by _Gene Ranker_ (use
-`generanker --list-methods` (in the virtual environment) to see the available
-options) and modify the `./data/in/config/heatmaps_runtime_options.json` file
-accordingly. Then,
+## Run the analysis pipeline
+Edit the `./data/in/config/heatmaps_runtime_options.json` JSON file based on the desired options
+```json
+{
+    "rank_method": "norm_fold_change",
+    "threads": 3,
+    "save_extra_plots": false,
+    "prune_similarity": 0.9,
+    "prune_direction": "bottomup",
+    "run_unweighted": false,
+    "alpha_threshold": 0.20,
+    "cluster_heatmap_cols": false
+}
+```
+In particular, use `generanker --list-methods` within the Python virtual environment, to see the available ranking metrics implemented by _Gene Ranker_. Then
 ```bash
 kerblam run heatmaps -l --profile test
 ```
-this will run the following modules (from `./src/modules/`):
+this will run the following modules (from `./src/modules/`) along with the
+related dependencies:
 1. `ranking/select_and_run.py`
 	- metasplit
 	- gene_ranker
 		- fast-cohen
 1. `make_genesets.py`
 	- bonsai
+1. `run_gsea.R`
+1. `plotting/plot_large_heatmap.R`
 
+### Rank genes
+`metasplit` is the program used by `select_and_run.py` to parse the JSON query
+file (`./data/in/config/DEA_queries/dea_queries.json`) and extract within-group (i.e., for each cancer type) case and control submatrices from the global expression matrix.
+Then, for each cancer type, `gene_ranker` is run to calculate the ranking metric selected through the `rank_method` JSON property.
+Final ranks are saved in the `./data/deas/` directory as two-coulmn (sample,ranking) CSV tables.
 
+### Make the gene sets
+#### 1. Generate large tables
+`make_genesets.py` uses `make_large_tables()` Ariadne's function to make 9
+fundamental "large tables" based on the queries hardcoded in
+`./data/in/config/gene_lists/basic.json`
+```
+whole_transportome
+|___pores
+|	|___channels
+|	|___aquaporins
+|___transporters
+	|___solute_carriers
+	|___atp_driven
+		|___ABC
+		|___pumps
+```
+#### 2. Generate lists from large tables
+For each large table, `bonsai` is used to generate tree structures representing
+all the possible gene sets, based on the the 3 parameters of the function
+`generate_gene_list_trees()`, with the following default values:
+```python
+min_pop_score: float = 0.5,
+min_set_size: int = 10,
+min_recurse_set_size: int = 40,
+```
+with the following meaning:
+- `min_pop_score`: minimum portion of non-NA values in a column to be considered for gene lists.
+- `min_set_size`: Minimum number of genes to produce a valid gene set.
+- `min_recurse_set_size`: minimum parent-geneset size to have before running
+recursion on it (effective if `recurse` boolean is `True`).
+
+These parameters cannot be assigned by editing the `heatmaps_runtime_options.json` JSON file because they are considered lower-level parameters, however they can be passed as arguments to the `make_genesets.py` script within the `heatmaps.makefile` workflow. 
+```make
+# E.g.,
+python $(mods)/make_genesets.py ./data/MTPDB.sqlite ./data/in/config/gene_lists/basic.json \
+	./data/genesets.json ./data/genesets_repr.txt \
+	--min_pop_score 0.7 \
+	--min_set_size 15 \
+	--min_recurse_set_size 20 \
+	--prune_direction $(PRUNE_DIRECTION) \
+	--prune_similarity $(PRUNE_SIMILARITY) \
+	--verbose
+```
+
+#### 3. Make the union of the genesets following the structure
+All gene sets are merged together into a large tree structure, then the
+`peune()` function is used to remove redundancy. The two parameters of `prune()`
+function (`similarity` and `direction`) are set in the
+`./data/in/config/heatmaps_runtime_options.json` file, with the following
+defaults:
+```json
+"prune_similarity": 0.5,
+"prune_direction": "bottomup",
+```
 
 
 

@@ -1,9 +1,12 @@
 # Bibliographic references
-refs/
+/refs/
+
+# Temporary/private notes
+/tmp_notes.md
 
 # Sublime project files
-*.sublime-project
-*.sublime-workspace
+/*.sublime-project
+/*.sublime-workspace
 
 # History files
 .Rhistory
